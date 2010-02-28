@@ -6,7 +6,13 @@ h2. Description
 
 The S3assets plugin is meant to help with the static assets we use in the front-end development of a site. It also it meant to help with maintaining a fresh set of S3 hosted assets with far future headers that will expire whenthe file is changed.
 
-To use the Amazon s3 service be sure to setup an s3 account. Once you do, place these lines in your config.php file. Make sure you replace the text with your keys.
+
+h2. Installation / Setup
+
+* Copy pi.s3assets.php to your system/plugins directory
+* Copy the pi.s3assets folder to your system/plugins direction
+* To use the Amazon s3 service be sure to setup an s3 account
+* Place these lines in your config.php file. Make sure you replace the text with your keys.
 
 <pre><code>
 // s3assets
@@ -104,3 +110,8 @@ Example: <code>{exp:s3assets s3bucket="your.bucket.com" src="/_js/_global.js"}</
 Renders: <code><script type="text/javascript" src="http://bucket.s3bucket.s3.amazonaws.com/_js/_global.js?1255143438" charset="utf-8"></script></code>
 
 The JS file extension supports changing your character set using *charset=""*. If left blank it will default to utf-8.
+
+h2. Change Log
+
+_coming soon upon release_
+
