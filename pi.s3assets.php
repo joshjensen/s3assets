@@ -82,7 +82,7 @@ class s3assets {
       $force = $TMPL->fetch_param('force');
       $cname = $TMPL->fetch_param('cname');
       $cnamemax = $TMPL->fetch_param('cnamemax');
-      $eeassetConfig = $PREFS->core_ini['s3assets'];
+      $s3assetsConfig = $PREFS->core_ini['s3assets'];
       $image_s3bucket = $TMPL->fetch_param('image_s3bucket');
 		
 		if ($TMPL->fetch_param('remote') == "yes") {$cache_src = $src;}
@@ -118,7 +118,7 @@ class s3assets {
       //*******
       // FOR DEBUGGING
       //*******
-      if ($TMPL->fetch_param('debug') == "yes" || $eeassetConfig['debugS3'] == "y") {
+      if ($TMPL->fetch_param('debug') == "yes" || $s3assetsConfig['debugS3'] == "y") {
          $cache_flag = TRUE;
          error_log('DEBUG MODE ON - Page: '.getenv('REQUEST_URI').' | Resource: '.$src);
       }
@@ -131,7 +131,7 @@ class s3assets {
       //*******
       // If there is no s3bucket or we are working locally just send the link along with the correct information.
       //*******      
-      if ($s3bucket != "" && $eeassetConfig['environment'] == "production") {
+      if ($s3bucket != "" && $s3assetsConfig['environment'] == "production") {
          if ($cname == "" || $cnamemax == "") {
             $asset_url = 'http://'.$s3bucket.'.s3.amazonaws.com'.$src.'?'.$cache_last_modified;
          } else {
@@ -268,10 +268,10 @@ class s3assets {
             if (!class_exists('S3'))require_once('pi.s3assets/S3.php');
          
             //AWS access info - Make sure to add this to your config.php file
-            $eeassetConfig = $PREFS->core_ini['s3assets'];
+            $s3assetsConfig = $PREFS->core_ini['s3assets'];
             
-            $awsAccessKey = $eeassetConfig['awsAccessKey'];
-            $awsSecretKey = $eeassetConfig['awsSecretKey'];
+            $awsAccessKey = $s3assetsConfig['awsAccessKey'];
+            $awsSecretKey = $s3assetsConfig['awsSecretKey'];
          
             if (!defined('awsAccessKey')) define('awsAccessKey', $awsAccessKey);
             if (!defined('awsSecretKey')) define('awsSecretKey', $awsSecretKey);
