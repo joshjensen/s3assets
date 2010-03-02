@@ -1,6 +1,6 @@
 h1. S3Assets
 
-Helps manage asset caching and storage on S3, by John Jensen <a href="http://joshjensen.com">joshjensen.com</a>
+Helps manage asset caching and storage on S3, by Josh Jensen <a href="http://joshjensen.com">joshjensen.com</a>
 
 h2. Description
 
