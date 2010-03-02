@@ -1,0 +1,117 @@
+h1. S3Assets
+
+Helps manage asset caching and storage on S3, by Josh Jensen <a href="http://joshjensen.com">joshjensen.com</a>
+
+h2. Description
+
+The S3assets plugin is meant to help with the static assets we use in the front-end development of a site. It also it meant to help with maintaining a fresh set of S3 hosted assets with far future headers that will expire whenthe file is changed.
+
+
+h2. Installation / Setup
+
+* Copy pi.s3assets.php to your system/plugins directory
+* Copy the pi.s3assets folder to your system/plugins direction
+* To use the Amazon s3 service be sure to setup an s3 account
+* Place these lines in your config.php file. Make sure you replace the text with your keys.
+
+<pre><code>
+// s3assets
+$conf['s3assets'] = array(
+   "environment" => "-- development, staging, or production --",
+   "awsAccessKey" => "-- Your awsAccessKey Here --",
+   "awsSecretKey" => "-- Your awsSecretKey Here --"
+);
+</code></pre>
+
+
+h2. Global Parameters
+
+*src=""*
+This is the relative path to the file that you are trying to access.
+Example: src="_css/global.css"
+
+*s3bucket=""*
+This is the name of the s3 s3bucket you would like to have your assets placed in and referenced from. This is optional.
+Example: s3bucket_name="asset1.mysite.com"
+
+*force=""*
+If you are using a minify plugin this can be very useful
+Example force="js" -- this will force a javascript file even when you are not using a file extension. Just remember this has no way of knowing when you updated the file, so you have to delete the cache manually.
+
+*cname=""*
+If you have cloudfront and your DNS setup for multiple cnames that reference the same bucket you can use this feature for overcoming the browsers open connections limitation. This feature will spread the connections over multiple domains. Simply use "$1" where the number would go. To set this up simply use assets$1.yourdomain.com - then set the cnamemax to the last number of cnames you have setup. Like assets1.yourdomain.com, assets2.yourdomain.com, assets3.yourdomain.com. The plugin will replace $1 with the number of the server.
+
+*cnamemax=""*
+(Required to use cname) As explained above this is the highest number of your asset servers.
+Example: assets1.yourdomain.com, assets2.yourdomain.com, assets3.yourdomain.com.
+cnamemax="3"
+
+Example: 
+<pre><code>
+{exp:s3assets 
+   s3bucket="your.bucket.com" 
+   src="/foo/bar/image.jpg"
+   cname="assets$1.yourdomain.com"
+   cnamemax="5"
+}
+</code></pre>
+
+
+h2. Images
+
+Example: <code>{exp:s3assets s3bucket="your.bucket.com" src="/_images/smallimg.jpg"}</code>
+Renders: <code><img src="http://bucket.s3bucket.s3.amazonaws.com/_images/smallimg.jpg?1255500429" alt="" /></code>
+
+The image tag supports all of the html options for an image tag.
+_alt="", rel="", class="", id="", style="", width="", height=""_
+
+Example: <code>{exp:s3assets s3bucket="your.bucket.com" src="/_images/smallimg.jpg" alt="{title}" class="example"}</code>
+Renders: <code><img src="http://bucket.s3bucket.s3.amazonaws.com/_images/smallimg.jpg?1255500429" alt="This is my title" class="example" /></code>
+
+
+h2. CSS
+
+Example: <code>{exp:s3assets s3bucket="your.bucket.com" src="/_css/global.css"}</code>
+Renders: <code><link rel="stylesheet" href="http://bucket.s3bucket.s3.amazonaws.com/_css/_global.css?1255500072" media="screen" type="text/css" /></code>
+
+The CSS file extension supports changing the media type by using *media=""*. If none is set it will default to screen.
+
+h3. Alpha
+
+This is an alpha feature but if you load a css file with an image s3bucket parameter the plugin will replace the image urls in your CSS file and upload those images to your s3 server.
+
+*image_s3bucket=""*
+This will parse the css file and upload all of the images to this bucket. It will then replace all of the url() references with the new S3 location. This currently only works for relative paths to the web root like url(/images/image.jpg)
+
+cname/cnamemax These work the same as above.
+
+Example:
+<pre><code>
+{exp:s3assets 
+   s3bucket="your.bucket.com" 
+   image_s3bucket="assets.yourdomain.com" 
+   src="/_css/_global.css"
+}
+</code></pre>
+Example With Cname:
+<pre><code>
+{exp:s3assets 
+   s3bucket="your.bucket.com"
+   image_s3bucket="assets.yourdomain.com" 
+   src="/_css/_global.css"
+   cname="assets$1.yourdomain.com"
+   cnamemax="5"
+}
+</code></pre>
+
+h2. Javascript
+
+Example: <code>{exp:s3assets s3bucket="your.bucket.com" src="/_js/_global.js"}</code>
+Renders: <code><script type="text/javascript" src="http://bucket.s3bucket.s3.amazonaws.com/_js/_global.js?1255143438" charset="utf-8"></script></code>
+
+The JS file extension supports changing your character set using *charset=""*. If left blank it will default to utf-8.
+
+h2. Change Log
+
+_coming soon upon release_
+
