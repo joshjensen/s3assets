@@ -259,17 +259,20 @@ class s3assets {
             @unlink($params['cache_src']);
             @rename($temp, $params['cache_src']);
          }
+         //AWS access info - Make sure to add this to your config.php file
+         $s3assetsConfig = $PREFS->core_ini['s3assets'];
+         
+         if (isset($s3assetsConfig['user'])) {
+            if (!defined("FILE_PUT_CONTENTS_ATOMIC_OWN")) {define("FILE_PUT_CONTENTS_ATOMIC_OWN", $s3assetsConfig['user']);}
+            chown($params['cache_src'], FILE_PUT_CONTENTS_ATOMIC_OWN);
+         }
                   
-         // chown($params['cache_src'], FILE_PUT_CONTENTS_ATOMIC_OWN);
          chmod($params['cache_src'], FILE_PUT_CONTENTS_ATOMIC_MODE);
          
          // Initiate S3 class and upload the file         
          if ($params['s3bucket'] != "") {
             if (!class_exists('S3'))require_once('pi.s3assets/S3.php');
-         
-            //AWS access info - Make sure to add this to your config.php file
-            $s3assetsConfig = $PREFS->core_ini['s3assets'];
-            
+                     
             $awsAccessKey = $s3assetsConfig['awsAccessKey'];
             $awsSecretKey = $s3assetsConfig['awsSecretKey'];
          
